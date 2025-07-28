@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: user-pod
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      stdin: true        # Enables input from terminal (e.g. typing commands)
+      tty: true          # Opens a terminal session (keeps shell running)
