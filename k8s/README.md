@@ -2,10 +2,10 @@
 
 This project demonstrates how to deploy a scalable **Flask-based Task Manager API** in a Kubernetes cluster using modern deployment practices. It includes configuration files for:
 
-- A **Deployment** running 3 replicas of the Flask app for high availability
-- A **LoadBalancer Service** for external access to the application
-- A **ConfigMap** to inject environment variables
-- A utility Pod (`user-pod`) for internal testing/debugging (using Alpine)
+- A **Deployment** running 3 replicas of the Flask app for high availability  
+- A **LoadBalancer Service** for external access to the application  
+- A **ConfigMap** to inject environment variables  
+- A utility Pod (`user-pod`) for internal testing/debugging (using Alpine)  
 
 ---
 
@@ -27,6 +27,51 @@ k8s/
 - Kubernetes cluster (Minikube, Kind, EKS, GKE, etc.)
 - `kubectl` CLI configured to access your cluster
 - Internet access from the cluster to pull the image: `codeislife771/flask-task-manager:latest`
+
+---
+
+
+### 🧹 Step 0: (Optional) Delete Any Existing Cluster
+
+If you have an existing Minikube cluster you want to replace, delete it first:
+
+```bash
+minikube delete -p <old-profile-name>
+```
+
+Example:
+
+```bash
+minikube delete -p four
+```
+
+## 🧰 Getting Started with Minikube (Recommended)
+
+To create a multi-node Minikube cluster with a named profile:
+
+```bash
+# Replace <profile-name> and <number-of-nodes> as desired
+minikube start -p <profile-name> --nodes=<number-of-nodes>
+```
+
+Example:
+
+```bash
+minikube start -p flask-cluster --nodes=2
+```
+
+This sets up a multi-node Kubernetes cluster using Minikube under the profile `flask-cluster`. You can later refer to this profile for operations like tunnel and dashboard:
+
+```bash
+minikube -p flask-cluster tunnel
+minikube -p flask-cluster dashboard
+```
+
+Make sure to configure your shell to use the profile:
+
+```bash
+kubectl config use-context flask-cluster
+```
 
 ---
 
