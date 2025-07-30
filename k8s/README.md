@@ -58,6 +58,18 @@ Example:
 
 ```bash
 minikube start -p flask-cluster --nodes=2
+
+**Note:** After creating a Minikube profile, you may need to activate it:
+
+```bash
+minikube profile <profile-name>
+```
+
+Example:
+
+```bash
+minikube profile flask-cluster
+```
 ```
 
 This sets up a multi-node Kubernetes cluster using Minikube under the profile `flask-cluster`. You can later refer to this profile for operations like tunnel and dashboard:
@@ -98,6 +110,30 @@ kubectl config use-context flask-cluster
    ```
 
 ---
+
+### 🌐 Important: Enable Minikube Tunnel for LoadBalancer
+
+If you're using Minikube, LoadBalancer services require a tunnel to be established.
+
+In a separate terminal window, run:
+
+```bash
+minikube tunnel
+```
+
+This command creates a route to external LoadBalancer IPs, allowing services like `flask-service` to get an actual IP.
+
+Make sure you are operating on the correct profile. If needed, activate it:
+
+```bash
+minikube profile <profile-name>
+```
+
+Example:
+
+```bash
+minikube profile flask-cluster
+```
 
 ## 🌐 Accessing the Flask App
 
