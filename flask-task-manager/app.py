@@ -37,19 +37,38 @@ def get_tasks():
 
 @app.route('/tasks', methods=['POST'])
 def create_task():
-    data = request.get_json()
-    name = data.get('name')
-    author = data.get('author')
-    if not name or not author:
-        return jsonify({'error': 'Invalid or duplicate task name'}), 400
+    MAX_LENGTH = 100  # Maximum allowed length for task name and author
 
-    tasks = load_tasks()
+    data = request.get_json()  # Get JSON payload from the request
+
+    # Strip leading/trailing spaces from input fields
+    name = data.get('name', '').strip()
+    author = data.get('author', '').strip()
+
+    # Check if name or author is missing or contains only spaces
+    if not name or not author:
+        return jsonify({'error': 'Invalid or missing task name or author'}), 400
+
+    # Check if name or author exceeds the allowed character limit
+    if len(name) > MAX_LENGTH or len(author) > MAX_LENGTH:
+        return jsonify({'error': 'Name or author too long'}), 400
+
+    tasks = load_tasks()  # Load existing tasks from the JSON file
+
+    # Check if a task with the same (stripped) name already exists
+    if name in tasks:
+        return jsonify({'error': 'Duplicate task name'}), 400
+
+    # Save the new task with current creation date
     tasks[name] = {
-        'author': data.get('author', ''),
+        'author': author,
         'date_create': datetime.now().strftime('%Y-%m-%d')
     }
-    save_tasks(tasks)
-    return jsonify({'message': 'Task created'}), 201
+
+    save_tasks(tasks)  # Write updated tasks back to the file
+
+    return jsonify({'message': 'Task created'}), 201  # Success response with HTTP 201
+
 
 @app.route('/tasks/<name>', methods=['PUT'])
 def update_task(name):
