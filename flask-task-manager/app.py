@@ -16,7 +16,7 @@ def load_tasks():
 
 def save_tasks(tasks):
     with open(DATA_FILE, 'w') as f:
-        json.dump(tasks, f, indent=2)
+        json.dump(tasks, f)
 
 
 @app.route('/', methods=['GET'])
@@ -93,7 +93,7 @@ def delete_task(name):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    
+
     # Enable debug mode by default unless DEBUG env var is explicitly set to false
     debug = os.environ.get('DEBUG', 'true').lower() == 'true'
     app.run(host='0.0.0.0', debug=debug, port=port)
